@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>EasyClass - API</title>
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+
+
+</head>
+
+<style>
+    #courses-list {}
+
+    #feature-img {
+
+        border-bottom: 2px solid black;
+        width: 100%;
+        background-color: mintcream;
+
+        height: 150px;
+    }
+
+    body {
+        font-family: 'Roboto', sans-serif;
+    }
+
+    #gradient {
+
+        background-image: url('img/Superman.jpg');
+        width: 100%;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+
+    }
+
+    #left-side-bar {
+
+
+
+        height: 200px;
+        width: 400px;
+        background-color: white;
+        border: 1px solid black;
+        border-radius: 10px;
+
+
+
+    }
+
+    #right-side-pane {
+
+
+        height: 600px;
+        width: 650px;
+        background-color: white;
+        border: 1px solid black;
+        border-radius: 10px;
+
+    }
+
+</style>
+
+<body>
+
+    <div class="container">
+
+        <div id="feature-img" class="text-center">
+
+            <h2>EasyClass API written in python3</h2>
+
+            <button class="btn btn-primary">click</button>
+
+        </div>
+
+
+        <div id="gradient" class="text-dark text-center">
+
+
+            <div id="left-side-bar">
+
+                <h3>Courses</h3>
+
+                <hr />
+
+
+                <ul id="courses-list">
+                    <li>course1</li>
+                    <li>course2</li>
+                    <li>course3</li>
+
+                </ul>
+
+                <courses />
+
+            </div>
+
+
+            <div id="right-side-pane">
+
+                <h3>Wall</h3>
+                <hr />
+
+
+                <table class="table table-hover table-bordered">
+                    <thead>
+                        <tr>
+                           
+                            <th>
+                                Date
+                            </th>
+                            <th>
+                                Post
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            
+                            <td>
+                               01/04/2012
+                                
+                            </td>
+                            <td>
+                                Task-3 Has Been Uploaded. You Can Check it through Assignment Section.The Deadline for the Assignment is 19-Feb-2020. Ignore the deadline which is mentioned in the file.If you have question related to assignment please pay a visit to my office
+                            </td>
+
+                        </tr>
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+
+</body>
+
+</html>
