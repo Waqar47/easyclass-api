@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 proxies = {"http": "http://127.0.0.1:8080", "https": "http://127.0.0.1:8080"}
 #r = requests.get("https://www.google.com/", proxies=proxies, verify=False)
 user_agent = "waleed"
-
+domain = "easyclass.com"
 
 def post_info(json):
     updates = json['data']['updates']
@@ -41,7 +41,7 @@ def get_instructor_info(json):
 def get_auth_cookie(cookies,c_type,auth):
     
     request_obj = requests.Session()
-    response = request_obj.post('https://easyclass.com/site_auth/login',cookies=cookies,headers=c_type,data=auth)
+    response = request_obj.post('https://' + domain + '/site_auth/login',cookies=cookies,headers=c_type,data=auth)
     auth_cookie = response.cookies.get_dict()
     return auth_cookie
     
@@ -54,8 +54,8 @@ def get_wall_json(request_obj,links,cookie):
         
         link = link['href']
         course_id = link.split('/')[2]
-        url = 'https://easyclass.com/sectionupdates/%s/json/list' % course_id
-        response = request_obj.post(url,cookies=cookie,headers = {'User-Agent':user_agent,'Referer':'https://easyclass.com/sections/'+course_id+'/updates','Accept': 'application/json, text/javascript, */*; q=0.01'})
+        url = 'https://' + domain + '/sectionupdates/%s/json/list' % course_id
+        response = request_obj.post(url,cookies=cookie,headers = {'User-Agent':user_agent,'Referer':'https://' + domain + '/sections/'+course_id+'/updates','Accept': 'application/json, text/javascript, */*; q=0.01'})
         
         if(response.status_code == 200):
             json = response.json() 
@@ -74,7 +74,7 @@ def get_easy_creds():
         return (email,password)
         
 def get_course_links_names(request_obj,cookies,c_type,auth):
-    response = request_obj.post('https://easyclass.com/site_auth/login',cookies=cookies,headers=c_type,data=auth)
+    response = request_obj.post('https://' + domain + '/site_auth/login',cookies=cookies,headers=c_type,data=auth)
     
     soup = BeautifulSoup(response.text,'html.parser')
     
@@ -98,7 +98,7 @@ def session_requests():
     email,password=get_easy_creds()
     
     c_type = {'Content-Type': 'application/x-www-form-urlencoded','User-Agent':user_agent}
-    cookie_part1 = requests.get('https://easyclass.com/').cookies.get_dict()
+    cookie_part1 = requests.get('https://' + domain + '/').cookies.get_dict()
     
     
     
