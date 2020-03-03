@@ -1,4 +1,5 @@
 import requests
+import json
 from bs4 import BeautifulSoup
 
 
@@ -30,6 +31,10 @@ def get_instructor_info(json):
     last_name = faculty_data['last_name']
     
     role = faculty_data['role']
+    
+    details = {'first_name':first_name,'last_name':last_name,'role':role}
+    
+    return details
     
     
     
@@ -101,20 +106,59 @@ def session_requests():
     
     home = requests.Session()
     
-    
-    
     links_names = get_course_links_names(home,cookie_part1,c_type,auth)
     cookie = get_auth_cookie(cookie_part1,c_type,auth)
     
-    print(get_wall_json(home,links_names,cookie_part1))
+    json_dict = get_wall_json(home,links_names,cookie_part1)
+    
+    faculty_info = get_instructor_info(json_dict)
+    
+    
+    write_wall_html(faculty_info,json_dict,links_names)
+                    
+    
+    
+          
+    
+
+
+
+def write_wall_html(faculty_info,posts,links_names):
+    soup = BeautifulSoup(open('template\my_wall.html'),'html.parser')
+    body = soup.find('body')
+    
+    faculty = soup.new_tag('p',hidden='true',id='faculty_info')
+    posts_tag = soup.new_tag('p',hidden='true',id='posts')
+    links_tag = soup.new_tag('p',hidden='true',id='courses_info')
+    script = soup.new_tag('script',src="js/script.js")
+    
+    faculty.string = json.dumps(faculty_info)
+    posts_tag.string = json.dumps(posts)
+    links_tag.string = json.dumps(links_names)
+    
+    body.append(faculty)
+    body.append(posts_tag)
+    body.append(links_tag)
+    body.append(script)
+    
+    out = open('my_wall.html','w')
+    out.write(str(soup))
+    
+    
+    
+    
+    
+    
+    
+    
+        
+    
+    
     
     
     
 
 
-
-def write_wall_html(data):
-    pass
 
 if __name__ == '__main__':
     session_requests()
