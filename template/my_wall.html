@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>EasyClass - API</title>
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+
+
+</head>
+
+<style>
+
+
+    #feature-img {
+
+        border-bottom: 2px solid black;
+        width: 100%;
+        background-color: mintcream;
+
+        height: 150px;
+    }
+
+    body {
+        font-family: 'Roboto', sans-serif;
+    }
+
+    #gradient {
+
+        background-image: url('img/Superman.jpg');
+        width: 100%;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+
+    }
+
+    #left-side-bar {
+
+
+
+        height: 200px;
+        width: 400px;
+        background-color: white;
+        border: 1px solid black;
+        border-radius: 10px;
+
+
+
+    }
+
+    #right-side-pane {
+
+
+        height: 600px;
+        width: 650px;
+        background-color: white;
+        border: 1px solid black;
+        border-radius: 10px;
+
+    }
+
+</style>
+
+<body>
+
+    <div class="container">
+
+        <div id="feature-img" class="text-center">
+
+            <h2>EasyClass API written in python3</h2>
+
+            <button class="btn btn-primary"><a href="https://github.com/waqar47" class="text-white" target="_blank">> Author</a></button>
+
+        </div>
+
+
+        <div id="gradient" class="text-dark text-center">
+
+
+            <div id="left-side-bar">
+
+                <h3><b>Courses</b></h3>
+
+                <hr />
+
+
+                <ul id="courses-list">
+
+
+                </ul>
+
+
+
+            </div>
+
+
+            <div id="right-side-pane" style="overflow-y:auto;">
+                <h3><b>Wall</b></h3> <h6 class="text-left" id="faculty"></h6>
+                <hr />
+
+
+                <table class="table table-hover table-bordered" id="posts_table">
+                    <thead>
+                        <tr>
+
+                            <th>
+                                Date
+                            </th>
+                            <th>
+                                Post
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+
+
+</body>
+
+</html>
