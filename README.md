@@ -4,7 +4,7 @@
 easyclass.com is the new technology for teachers and students which simplifies materials, assignments, tests, grades, discussions and calendar.
 
 <h2>Motivation</h2>
-On each course update student wall may get updated by instructor. By website there is no feature of notification sent by email or other channel. This api will return wall updates of student courses.
+As website lacks feature to notify students about the updates. This api will return wall updates of student courses.
 
 <h2>How to use</h2>
 <ol>
