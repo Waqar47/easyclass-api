@@ -6,7 +6,7 @@ easyclass.com is the new technology for teachers and students which simplifies m
 <h2>Motivation</h2>
 As website lacks feature to notify students about the updates. This api will return wall updates of student courses.
 
-<h2>How to use</h2>
+<h2>Usage</h2>
 <ol>
  <li>Open creds.txt</li>
  <li>Replace email and password with easyclass credentials</li>
@@ -15,9 +15,6 @@ As website lacks feature to notify students about the updates. This api will ret
 </ol>
 
 
-<h2>Requirements</h2>
-<ul>
-<li>Python3</li>
-<li>pip3 install -r requirements.txt</li>
- </ul>
+<h2>Installation</h2>
+ <code>pip3 install -r requirements.txt</code>
 
