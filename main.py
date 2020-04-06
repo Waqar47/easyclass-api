@@ -124,7 +124,7 @@ def session_requests():
 
 
 def write_wall_html(faculty_info,posts,links_names):
-    soup = BeautifulSoup(open('template\my_wall.html'),'html.parser')
+    soup = BeautifulSoup(open('template/my_wall.html'),'html.parser')
     body = soup.find('body')
     
     faculty = soup.new_tag('p',hidden='true',id='faculty_info')
