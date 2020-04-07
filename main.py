@@ -2,7 +2,8 @@ import requests
 import json
 import logging
 from bs4 import BeautifulSoup
-
+import threading
+import queue as Queue
 
 #proxies = {"http": "http://127.0.0.1:8080", "https": "http://127.0.0.1:8080"}
 #r = requests.get("https://www.google.com/", proxies=proxies, verify=False)
@@ -25,7 +26,7 @@ def post_info(json):
     return posts
         
 
-def get_instructor_info(json):
+def get_instructor_info(json,my_queue):
     #magic
     id = list(json['data']['users'])[0]
     
@@ -38,7 +39,7 @@ def get_instructor_info(json):
     
     details = {'first_name':first_name,'last_name':last_name,'role':role}
     
-    return details
+    my_queue.put(details)
     
     
     
@@ -51,7 +52,7 @@ def get_auth_cookie(cookies,c_type,auth):
     
     
     
-def get_wall_json(request_obj,links,cookie):
+def get_wall_json(request_obj,links,cookie,my_queue):
     
     json = ''
     for link in links:
@@ -67,7 +68,7 @@ def get_wall_json(request_obj,links,cookie):
             print('[!] get_wall_json() request failed')
             exit(1)
 
-    return json
+    my_queue.put(json)
 
 def get_easy_creds():
 
@@ -78,7 +79,7 @@ def get_easy_creds():
         
         return (email,password)
         
-def get_course_links_names(request_obj,cookies,c_type,auth):
+def get_course_links_names(request_obj,cookies,c_type,auth,my_queue):
     response = request_obj.post('https://' + domain + '/site_auth/login',cookies=cookies,headers=c_type,data=auth)
     
     soup = BeautifulSoup(response.text,'html.parser')
@@ -95,11 +96,13 @@ def get_course_links_names(request_obj,cookies,c_type,auth):
         if not 'NoneType' in str(type(list_items[i].a)):
             links_names.append({'href':list_items[i].a['href'],'text':list_items[i].a.text})
     
-    return links_names
+    my_queue.put(links_names)
 
 
 
 def session_requests():
+    thread_ret_data = Queue.Queue()
+
     logging.info('Initiating session requests')
     logging.info('Reading... easyclass.com credentials')
     email,password=get_easy_creds()
@@ -113,18 +116,40 @@ def session_requests():
     
     home = requests.Session()
     logging.info('Fetching... courses links and names')
-    links_names = get_course_links_names(home,cookie_part1,c_type,auth)
+    #get course links therad --start--
+    links_names = threading.Thread(get_course_links_names(home,cookie_part1,c_type,auth,thread_ret_data))
+    links_names.start()
+    links_names.join()
+    links_names = thread_ret_data.get()
+    
     logging.info('Creating... authentication cookie')
     cookie = get_auth_cookie(cookie_part1,c_type,auth)
     
     logging.info('Fetching... student wall json blob')
-    json_dict = get_wall_json(home,links_names,cookie_part1)
     
+    #get json data (thread) --start--
+    json_dict = threading.Thread(target=get_wall_json(home,links_names,cookie_part1,thread_ret_data))
+    json_dict.start()
+    json_dict.join()
+
+    json_dict = thread_ret_data.get()
+    #thread --end--
+
     logging.info('Reading... instructor info')
-    faculty_info = get_instructor_info(json_dict)
-    
+    #faculty info thread --start--
+    faculty_info = threading.Thread(get_instructor_info(json_dict,thread_ret_data))
+    faculty_info.start()
+    faculty_info.join()
+    faculty_info = thread_ret_data.get()
+    #thread --end--
+
     logging.info('Writing... templates/index.html')
-    write_wall_html(faculty_info,json_dict,links_names)
+    #write wall html thread --start--
+    write_to_wall = threading.Thread(write_wall_html(faculty_info,json_dict,links_names))
+    write_to_wall.start()
+    write_to_wall.join()
+    #write wall html thread --end--
+
                     
     
     
