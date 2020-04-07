@@ -1,5 +1,6 @@
 import requests
 import json
+import logging
 from bs4 import BeautifulSoup
 
 
@@ -7,6 +8,9 @@ from bs4 import BeautifulSoup
 #r = requests.get("https://www.google.com/", proxies=proxies, verify=False)
 user_agent = "Chrome"
 domain = "easyclass.com"
+
+#config logging
+logging.basicConfig(level=logging.INFO)
 
 def post_info(json):
     updates = json['data']['updates']
@@ -66,6 +70,7 @@ def get_wall_json(request_obj,links,cookie):
     return json
 
 def get_easy_creds():
+
     with open('creds.txt') as file:
         txt = file.readline()
         email = txt.split(',')[0]
@@ -95,6 +100,8 @@ def get_course_links_names(request_obj,cookies,c_type,auth):
 
 
 def session_requests():
+    logging.info('Initiating session requests')
+    logging.info('Reading... easyclass.com credentials')
     email,password=get_easy_creds()
     
     c_type = {'Content-Type': 'application/x-www-form-urlencoded','User-Agent':user_agent}
@@ -105,15 +112,18 @@ def session_requests():
     auth = 'email=%s&password=%s' % (email,password)
     
     home = requests.Session()
-    
+    logging.info('Fetching... courses links and names')
     links_names = get_course_links_names(home,cookie_part1,c_type,auth)
+    logging.info('Creating... authentication cookie')
     cookie = get_auth_cookie(cookie_part1,c_type,auth)
     
+    logging.info('Fetching... student wall json blob')
     json_dict = get_wall_json(home,links_names,cookie_part1)
     
+    logging.info('Reading... instructor info')
     faculty_info = get_instructor_info(json_dict)
     
-    
+    logging.info('Writing... templates/index.html')
     write_wall_html(faculty_info,json_dict,links_names)
                     
     
@@ -124,13 +134,13 @@ def session_requests():
 
 
 def write_wall_html(faculty_info,posts,links_names):
-    soup = BeautifulSoup(open('template/my_wall.html'),'html.parser')
+    soup = BeautifulSoup(open('templates/my_wall.html'),'html.parser')
     body = soup.find('body')
     
     faculty = soup.new_tag('p',hidden='true',id='faculty_info')
     posts_tag = soup.new_tag('p',hidden='true',id='posts')
     links_tag = soup.new_tag('p',hidden='true',id='courses_info')
-    script = soup.new_tag('script',src="js/script.js")
+    script = soup.new_tag('script',src="{{ url_for('static', filename='js/script.js') }}")
     
     faculty.string = json.dumps(faculty_info)
     posts_tag.string = json.dumps(posts)
@@ -141,24 +151,8 @@ def write_wall_html(faculty_info,posts,links_names):
     body.append(links_tag)
     body.append(script)
     
-    out = open('my_wall.html','w')
+    out = open('templates/index.html','w')
     out.write(str(soup))
     
     
     
-    
-    
-    
-    
-    
-        
-    
-    
-    
-    
-    
-
-
-
-if __name__ == '__main__':
-    session_requests()
