@@ -1,2 +1,4 @@
 requests==2.22.0
 bs4
+flask
+logging
