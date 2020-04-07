@@ -8,9 +8,9 @@ As website lacks feature to notify students about the updates. This api will ret
 
 <h2>Usage</h2>
 <ol>
- <li>Open creds.txt</li>
+ <li>Open **creds.txt**</li>
  <li>Replace email and password with easyclass credentials</li>
- <li>Run the script server.py </li>
+ <li>Run the script **server.py** </li>
  <li>Once successful a localhost instance will be created by flask</li>
 </ol>
 
