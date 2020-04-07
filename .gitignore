@@ -1,5 +1,4 @@
 my_wall.html
 *.bak
 __pycache__
-templates/*.bak
-templates/index.html
+!templates/my_wall.html
