@@ -17,6 +17,8 @@ As website lacks feature to notify students about the updates. This api will ret
  <li>Once successful a localhost instance will be created by flask</li>
 </ol>
 
+## Runtime
+![Runtime image](runtime.JPG)
 
 
 
